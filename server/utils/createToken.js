@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-module.exports.createTokens = (user, JWT_SECRET) => {
+const createToken = (user, JWT_SECRET) => {
   //create authToken
   return jwt.sign(
     {
@@ -12,3 +12,4 @@ module.exports.createTokens = (user, JWT_SECRET) => {
     { expiresIn: "7d" }
   );
 };
+module.exports = createToken;
