@@ -68,7 +68,7 @@ app.post(
     }
     //user does not exist
     else {
-      return res.status(404).json({ error: "USER_NOT_FOUND" });
+      return res.status(403).json({ error: "INVALID_EMAIL_OR_PASSWORD" });
     }
   })
 );
