@@ -1,4 +1,4 @@
-module.exports.createCookie = (
+const createCookie = (
   res,
   authToken,
   secure = false,
@@ -10,3 +10,4 @@ module.exports.createCookie = (
     expires: expiresIn,
   });
 };
+module.exports = createCookie;

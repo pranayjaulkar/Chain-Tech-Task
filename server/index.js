@@ -5,8 +5,9 @@ const cookieParser = require("cookie-parser");
 const customError = require("./utils/customError.js");
 const createCookie = require("./utils/createCookie.js");
 const createToken = require("./utils/createToken.js");
-const { validateUser } = require("./middleware/index");
+const { validateUser, isLoggedIn } = require("./middleware/index");
 const catchAsyncError = require("./utils/catchAsyncError.js");
+const jwt = require("jsonwebtoken");
 const path = require("path");
 const cors = require("cors");
 const User = require("./models/user.js");
@@ -53,38 +54,11 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.get(
-  "/users/:id",
-  catchAsyncError(async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findById(id);
-
-    //if user exists then return user object else return "user did not register" or "no account found"
-    if (user) {
-      const match = await bcrypt.compare(userData.password, user.password);
-      if (!match) {
-        return res.status(403).json({ error: "INVALID_EMAIL_OR_PASSWORD" });
-      }
-      //create jwt
-      const authToken = createToken(user, JWT_SECRET);
-      //create cookie to embed jwt
-      createCookie(res, authToken, process.env.NODE_ENV === "production");
-      res.status(200).json(user);
-    }
-    //user does not exist
-    else {
-      return res.status(404).json({ error: "USER_NOT_FOUND" });
-    }
-  })
-);
-
 app.post(
   "/users/login",
   catchAsyncError(async (req, res) => {
     const userData = req.body;
-    const user = await User.findOne({
-      $or: [{ email: userData.email }, { username: userData.username }],
-    });
+    const user = await User.findOne({ email: userData.email });
 
     //if user exists then return user object else return "user did not register" or "no account found"
     if (user) {
@@ -96,7 +70,7 @@ app.post(
       const authToken = createToken(user, JWT_SECRET);
       //create cookie to embed jwt
       createCookie(res, authToken, process.env.NODE_ENV === "production");
-      res.status(200).json(user);
+      return res.status(200).json(user);
     }
     //user does not exist
     else {
@@ -124,16 +98,57 @@ app.post(
       //create cookie to embed authToken
       const authToken = createToken(user, JWT_SECRET);
       createCookie(res, authToken, process.env.NODE_ENV === "production");
-      res.status(200).json(user);
+      return res.status(200).json(user);
     }
   })
 );
 
-app.use(
+app.patch(
+  "/users/:id",
+  isLoggedIn,
+  validateUser,
+  catchAsyncError(async (req, res) => {
+    const userData = req.body;
+    const { id } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(id, userData);
+    console.log("updatedUser",updatedUser)
+    return res.status(200).json(updatedUser);
+  })
+);
+app.delete(
+  "/users/:id",
+  isLoggedIn,
+  catchAsyncError(async (req, res) => {
+    const { id } = req.params;
+    const updatedUser = await User.deleteOne({ id });
+    return res.status(200).json(updatedUser);
+  })
+);
+
+app.get(
   "/users/logout",
   catchAsyncError(async (req, res) => {
     createCookie(res, "", new Date(Date.now()));
     res.status(200).send();
+  })
+);
+app.get(
+  "/users/refresh",
+  catchAsyncError(async (req, res) => {
+    const { userId } = req.cookies;
+    if (userId) {
+      const decodedData = jwt.verify(userId, JWT_SECRET);
+      const user = await User.findById(decodedData._id);
+      if (user) {
+        const authToken = createToken(user, JWT_SECRET);
+        createCookie(res, authToken, process.env.NODE_ENV === "production");
+        return res.status(200).json(user);
+      } else {
+        return res.status(404).json({ error: "USER_NOT_FOUND" });
+      }
+    } else {
+      return res.status(404).json({ error: "TOKEN_NOT_FOUND" });
+    }
   })
 );
 

@@ -1,11 +1,9 @@
-
-
 const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
-        <a className="navbar-brand" href="#">
-          UsersManager
+        <a className="navbar-brand" href="/">
+          User Profile
         </a>
         <button
           className="navbar-toggler"

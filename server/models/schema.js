@@ -14,7 +14,8 @@ const userSchema = Joi.object({
   }),
   phone: Joi.string().required(),
   website: Joi.string().uri().required(),
-  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{8,30}$")).required(),
+  password: Joi.string().required(),
   createdAt: Joi.date().allow(),
+  __v: Joi.allow(),
 });
 module.exports = { userSchema };
