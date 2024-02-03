@@ -52,7 +52,7 @@ const Register = () => {
         <h2>Registration Page</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">
+            <label htmlFor="name" className="form-label text-white">
               Name
             </label>
             <input
@@ -67,7 +67,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="username" className="form-label">
+            <label htmlFor="username" className="form-label text-white">
               Username
             </label>
             <input
@@ -82,7 +82,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="age" className="form-label">
+            <label htmlFor="age" className="form-label text-white">
               Age
             </label>
             <input
@@ -97,7 +97,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Gender</label>
+            <label className="form-label text-white">Gender</label>
             <select
               className="form-select"
               name="gender"
@@ -111,7 +111,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">
+            <label htmlFor="email" className="form-label text-white">
               Email
             </label>
             <input
@@ -126,7 +126,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">
+            <label htmlFor="password" className="form-label text-white">
               Password
             </label>
             <input
@@ -141,7 +141,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="state" className="form-label">
+            <label htmlFor="state" className="form-label text-white">
               State
             </label>
             <input
@@ -156,7 +156,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="city" className="form-label">
+            <label htmlFor="city" className="form-label text-white">
               City
             </label>
             <input
@@ -171,7 +171,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="zipcode" className="form-label">
+            <label htmlFor="zipcode" className="form-label text-white">
               Zipcode
             </label>
             <input
@@ -186,7 +186,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="phone" className="form-label">
+            <label htmlFor="phone" className="form-label text-white">
               Phone
             </label>
             <input
@@ -201,7 +201,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="website" className="form-label">
+            <label htmlFor="website" className="form-label text-white">
               Website
             </label>
             <input

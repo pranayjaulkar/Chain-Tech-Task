@@ -18,6 +18,11 @@ export const loginUser = (formData, navigate) => async (dispatch) => {
     }
   } catch (error) {
     console.log("error: ", error);
+    if (error.response.data.error === "INVALID_EMAIL_OR_PASSWORD") {
+      alert("Invalid email or password");
+    } else {
+      alert("Something went wrong. Please try again");
+    }
   }
 };
 
@@ -30,6 +35,11 @@ export const registerUser = (formData, navigate) => async (dispatch) => {
     }
   } catch (error) {
     console.log("error: ", error);
+    if (error.response.data.error === "USER_ALREADY_EXISTS") {
+      alert(`User with email  "${formData.email}"  already exists.`);
+    } else {
+      alert("Something went wrong. Please try again");
+    }
   }
 };
 
@@ -57,6 +67,8 @@ export const updateUser = (id, data, navigate) => async (dispatch) => {
     }
   } catch (error) {
     console.log("error: ", error);
+
+    alert("Something went wrong. Please try again");
   }
 };
 
@@ -67,5 +79,7 @@ export const logoutUser = (navigate) => async (dispatch) => {
     navigate("/login");
   } catch (error) {
     console.log("error: ", error);
+
+    alert("Something went wrong. Please try again");
   }
 };
