@@ -3,7 +3,9 @@ import { setUser } from "../store/reducers/user";
 
 const API = axios.create({
   baseURL:
-    import.meta.env.MODE === "production" ? "/" : "http://localhost:5000",
+    import.meta.env.MODE === "production"
+      ? "/api"
+      : "http://localhost:5000/api",
   withCredentials: true,
 });
 
@@ -58,12 +60,11 @@ export const updateUser = (id, data, navigate) => async (dispatch) => {
   }
 };
 
-export const logoutUser = () => async (dispatch) => {
+export const logoutUser = (navigate) => async (dispatch) => {
   try {
-    const res = await API.get("/users/logout");
-    if (res.data) {
-      dispatch(setUser(null));
-    }
+    await API.get("/users/logout");
+    dispatch(setUser(null));
+    navigate("/login");
   } catch (error) {
     console.log("error: ", error);
   }

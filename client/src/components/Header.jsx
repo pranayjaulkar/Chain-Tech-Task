@@ -1,26 +1,27 @@
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../actions";
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logoutUser(navigate));
+  };
+  const user = useSelector((state) => state.user);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container">
+      <div className="container d-flex justify-content-between align-items-center">
         <a className="navbar-brand" href="/">
           User Profile
         </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ml-auto">
-            {/* Add additional navigation links or components here */}
-          </ul>
-        </div>
+        {user ? (
+          <button className="btn btn-primary" onClick={handleLogout}>
+            Logout
+          </button>
+        ) : (
+          <div></div>
+        )}
       </div>
     </nav>
   );

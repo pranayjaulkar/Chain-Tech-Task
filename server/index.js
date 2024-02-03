@@ -48,14 +48,8 @@ mongoose
     console.log("MongoDB Connection Error\n", error);
   });
 
-if (process.env.NODE_ENV === "production") {
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-  });
-}
-
 app.post(
-  "/users/login",
+  "/api/users/login",
   catchAsyncError(async (req, res) => {
     const userData = req.body;
     const user = await User.findOne({ email: userData.email });
@@ -80,7 +74,7 @@ app.post(
 );
 
 app.post(
-  "/users/register",
+  "/api/users/register",
   validateUser,
   catchAsyncError(async (req, res) => {
     const userData = req.body;
@@ -104,19 +98,18 @@ app.post(
 );
 
 app.patch(
-  "/users/:id",
+  "/api/users/:id",
   isLoggedIn,
   validateUser,
   catchAsyncError(async (req, res) => {
     const userData = req.body;
     const { id } = req.params;
     const updatedUser = await User.findByIdAndUpdate(id, userData);
-    console.log("updatedUser",updatedUser)
     return res.status(200).json(updatedUser);
   })
 );
 app.delete(
-  "/users/:id",
+  "/api/users/:id",
   isLoggedIn,
   catchAsyncError(async (req, res) => {
     const { id } = req.params;
@@ -126,14 +119,14 @@ app.delete(
 );
 
 app.get(
-  "/users/logout",
+  "/api/users/logout",
   catchAsyncError(async (req, res) => {
     createCookie(res, "", new Date(Date.now()));
     res.status(200).send();
   })
 );
 app.get(
-  "/users/refresh",
+  "/api/users/refresh",
   catchAsyncError(async (req, res) => {
     const { userId } = req.cookies;
     if (userId) {
@@ -152,6 +145,11 @@ app.get(
   })
 );
 
+if (process.env.NODE_ENV === "production") {
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  });
+}
 app.all("*", (req, res, next) => {
   next(new customError("Page Not Found", 404));
 });

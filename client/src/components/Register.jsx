@@ -32,13 +32,6 @@ const Register = () => {
   };
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
-    console.log({
-      ...formData,
-      address: {
-        ...formData.address,
-        [name]: value,
-      },
-    });
     setFormData((prevData) => ({
       ...prevData,
       address: {
@@ -50,7 +43,6 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("formData: ", formData);
     dispatch(registerUser(formData, navigate));
   };
 

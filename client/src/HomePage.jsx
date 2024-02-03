@@ -45,6 +45,7 @@ export default function HomePage() {
   useEffect(() => {
     dispatch(refreshAuthToken(navigate));
   }, []);
+
   let inputs = [];
   if (formData) {
     inputs = [
